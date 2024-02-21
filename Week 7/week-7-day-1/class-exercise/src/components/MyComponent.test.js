@@ -11,5 +11,17 @@ describe("MyComponent", () => {
     const component = shallow(<MyComponent />);
     // then 
     expect(component.getElements()).toMatchSnapshot();
-  })
+  });
+  it("should create an entry in component state", () => {
+    // given 
+    const component = shallow(<MyComponent />);
+    const form = component.find('input');
+    // when 
+    form.props().onChange({target: {
+      name: 'myName',
+      value: 'myValue'
+    }});
+    // then
+    expect(component.state('input')).toBeDefined();
+  });
 });
