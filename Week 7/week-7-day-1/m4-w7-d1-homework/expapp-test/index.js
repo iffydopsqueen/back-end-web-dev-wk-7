@@ -33,3 +33,16 @@ app.get("/todo/:id", (req, res) => {
     let todo = todos.find(t => t.id === todoId);
     res.send(todo);
 });
+
+app.get("/joke", (req, res) => {
+    const url = "https://api.chucknorris.io/jokes/random";
+    https.get(url, (response) => {
+        let data = ''; /* keep appending data to chunks as we receive it */
+        response.on('data', (chunk) => {
+            data += chunk;
+        });
+        response.on('end', () => {
+            res.send(data);
+        });
+    })
+});
