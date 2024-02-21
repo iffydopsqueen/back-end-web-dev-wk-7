@@ -1,1 +1,3 @@
-# week-7-day-1
+# Back-End Web Development
+
+This repository is for my Back-End Web Development Class in Westcliff University - Week 7
