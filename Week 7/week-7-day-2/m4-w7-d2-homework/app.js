@@ -52,6 +52,9 @@ const limit = rateLimit({
 
 app.use('/routeName', limit);    // setting limiter on specific route 
 
+// Preventing DOS attacks - Body Parser 
+app.use(express.json({ limit: '10kb' }));   // body limit is 10
+
 
 //=======================
 //      R O U T E S
