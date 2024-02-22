@@ -4,33 +4,24 @@
 <h3>
     Sign Up
 </h3>
+<section class="errormsg">
+    <% if (errors) { %>
+        <ul class="my-errors">
+            <% errors.forEach(function(error) { %>
+                <li><%= error.msg %></li>
+            <% }); %>
+        </ul>
+    <% } %>
+</section>
 <form action="/register" method="POST">
-    <div class="field">
-        <label for="username">Username</label>
-        <input type="text" id="username" name="username">
-        <!-- Display username error message -->
-        <% if (errors && errors.username) { %>
-            <p id="username-error" class="error-message"><%= errors.username %></p>
-        <% } %>
-    </div>
-    
-    <div class="field">
-        <label for="password">Password</label>
-        <input type="password" id="password" name="password">
-        <!-- Display password error message -->
-        <% if (errors && errors.password) { %>
-            <p id="password-error" class="error-message"><%= errors.password %></p>
-        <% } %>
-    </div>
-
-    <div class="field">
-        <label for="email">Email</label>
-        <input type="email" name="email" id="email">
-    </div>
-    <div class="field">
-        <label for="phone">Phone</label>
-        <input type="text" name="phone" id="phone">
-    </div>
+    <label for="username">Username</label>
+    <input type="text" id="username" name="username">
+    <label for="password">Password</label>
+    <input type="password" id="password" name="password">
+    <label for="email">Email</label>
+    <input type="email" name="email" id="email">
+    <label for="phone">Phone</label>
+    <input type="text" name="phone" id="phone">
     <button class="btn btn-success">Submit</button>
 </form>
 </main>

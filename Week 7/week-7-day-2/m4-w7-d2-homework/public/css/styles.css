@@ -66,16 +66,18 @@
     margin: 10px 0px 20px 10px
   }
   
-  #error-message {
-    color: #E91E63;
-    display: block;
-    margin: 10px;
-    font-size: large;
+  .errormsg {
+    font-size: 0.9rem;
     max-width: fit-content;
   }
 
-  .error-message {
-    color: #E91E63;
-    font-size: 14px;
-    margin-top: 5px;
-}
+  .my-errors {
+    list-style: none;
+  }
+
+  .errormsg li:before {
+    content: "! Error: ";
+    color: #f00;
+    font-weight: bold;
+    font-size: 1rem; 
+  }
