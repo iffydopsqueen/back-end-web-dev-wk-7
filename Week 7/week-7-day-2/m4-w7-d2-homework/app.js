@@ -8,7 +8,8 @@ const express               =  require('express'),
       passportLocalMongoose =  require("passport-local-mongoose"),
       User                  =  require("./models/user"),
       mongoSanitize         = require("express-mongo-sanitize"),
-      rateLimit             = require("express-rate-limit")
+      rateLimit             = require("express-rate-limit"),
+      xss                   = require("xss-clean")
 
 //Connecting database
 mongoose.connect("mongodb://127.0.0.1/auth_demo");
@@ -54,6 +55,9 @@ app.use('/routeName', limit);    // setting limiter on specific route
 
 // Preventing DOS attacks - Body Parser 
 app.use(express.json({ limit: '10kb' }));   // body limit is 10
+
+// Data Sanitization against DOS attacks 
+app.use(xss());
 
 
 //=======================
