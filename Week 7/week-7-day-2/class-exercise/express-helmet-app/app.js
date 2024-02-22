@@ -1,8 +1,13 @@
 'use strict'
 
 const express = require('express');
+const helmet = require('helmet');
 const app = express();
 
+// use helmet to protect header
+app.use(helmet());
+
+// create route
 app.get('/', (req, res) => {
     console.log('route \'/\' called!')
     res.send({res: 'Sending 200 as response'});
