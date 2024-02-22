@@ -7,7 +7,8 @@ const express               =  require('express'),
       LocalStrategy         =  require("passport-local"),
       passportLocalMongoose =  require("passport-local-mongoose"),
       User                  =  require("./models/user"),
-      mongoSanitize         = require("express-mongo-sanitize")
+      mongoSanitize         = require("express-mongo-sanitize"),
+      rateLimit             = require("express-rate-limit")
 
 //Connecting database
 mongoose.connect("mongodb://127.0.0.1/auth_demo");
@@ -41,6 +42,15 @@ app.use(express.static("public"));
 
 // Data Sanitization against NoSQL injection attacks 
 app.use(mongoSanitize());
+
+// Preventing Brute force & DOS attacks - Rate limiting
+const limit = rateLimit({
+    max: 100,    // max requests
+    windowMs: 60 * 60 * 1000,   // 1 hour of 'ban' / lockout
+    message: 'Too many requests'    // message to send 
+});
+
+app.use('/routeName', limit);    // setting limiter on specific route 
 
 
 //=======================
