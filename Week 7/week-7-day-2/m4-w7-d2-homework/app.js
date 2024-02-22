@@ -12,6 +12,9 @@ const express               =  require('express'),
       xss                   = require("xss-clean"),
       helmet                = require("helmet");
 
+// Add express-validator for input validation
+const { body, validationResult } = require('express-validator');
+
 //Connecting database
 mongoose.connect("mongodb://127.0.0.1/auth_demo");
 
@@ -36,6 +39,17 @@ app.use(bodyParser.urlencoded(
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static("public"));
+
+// Validation middleware
+
+const validateSignup = [
+    body('username')
+        .notEmpty().withMessage('Username is required')
+        .isLength({ min: 5 }).withMessage('Username must be at least 5 characters long'),
+    body('password')
+        .notEmpty().withMessage('Password is required')
+        .isStrongPassword().withMessage('Password must be strong'),
+];
 
 
 //=======================
@@ -81,22 +95,32 @@ app.post("/login",passport.authenticate("local",{
     failureRedirect:"/login"
 }),function (req, res){
 });
-app.get("/register",(req,res)=>{
-    res.render("register");
+app.get("/register",(req,res) => {
+    res.render("register", { errors: {} });
 });
 
-app.post("/register",(req,res)=>{
-    
-    User.register(new User({username: req.body.username,email: req.body.email,phone: req.body.phone}),req.body.password,function(err,user){
-        if(err){
-            console.log(err);
-            res.render("register");
-        }
-        passport.authenticate("local")(req,res,function(){
-            res.redirect("/login");
-        })    
-    })
-})
+app.post("/register", validateSignup, (req,res) => {
+    const errors = validationResult(req);
+
+    // If there are validation errors or if the form is submitted empty
+    if (!errors.isEmpty() || Object.keys(req.body).length === 0) {
+        const errorMessages = errors.array().reduce((acc, cur) => {
+            acc[cur.param] = cur.msg;
+            return acc;
+        }, {});
+        res.render("register", { errors: errorMessages });
+    } else {
+        User.register(new User({username: req.body.username,email: req.body.email,phone: req.body.phone}), req.body.password, function(err,user) {
+            if(err){
+                console.log(err);
+                res.render("register");
+            }
+            passport.authenticate("local")(req, res, function() {
+                res.redirect("/login");
+            })    
+        })
+    }  
+});
 app.get("/logout",(req,res)=>{
     req.logout();
     res.redirect("/");

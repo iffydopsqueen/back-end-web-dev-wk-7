@@ -73,3 +73,9 @@
     font-size: large;
     max-width: fit-content;
   }
+
+  .error-message {
+    color: #E91E63;
+    font-size: 14px;
+    margin-top: 5px;
+}
