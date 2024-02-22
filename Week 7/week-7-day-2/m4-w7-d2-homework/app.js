@@ -9,7 +9,8 @@ const express               =  require('express'),
       User                  =  require("./models/user"),
       mongoSanitize         = require("express-mongo-sanitize"),
       rateLimit             = require("express-rate-limit"),
-      xss                   = require("xss-clean")
+      xss                   = require("xss-clean"),
+      helmet                = require("helmet");
 
 //Connecting database
 mongoose.connect("mongodb://127.0.0.1/auth_demo");
@@ -59,6 +60,8 @@ app.use(express.json({ limit: '10kb' }));   // body limit is 10
 // Data Sanitization against DOS attacks 
 app.use(xss());
 
+// Helmet to secure connection and data 
+app.use(helmet());
 
 //=======================
 //      R O U T E S
